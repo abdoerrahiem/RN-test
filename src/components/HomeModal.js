@@ -1,39 +1,23 @@
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import React from 'react';
+import Modal from 'react-native-modal';
+
 import { colors } from '../utils/colors';
 import Button from './Button';
 import Distance from './Distance';
-import HomeModal from './HomeModal';
 
-const HomeCard = ({ item }) => {
-  const [showModal, setShowModal] = React.useState(false);
-  const [currentItem, setCurrentItem] = React.useState(item);
-
-  const handleLike = () => {
-    const updatedItem = { ...currentItem };
-    updatedItem.like = updatedItem.like + 1;
-    setCurrentItem(updatedItem);
-  };
-
-  const handleDislike = () => {
-    const updatedItem = { ...currentItem };
-    updatedItem.like = updatedItem.like === 0 ? 0 : updatedItem.like - 1;
-    setCurrentItem(updatedItem);
-  };
-
+const HomeModal = ({ show, hide, item, handleLike, handleDislike }) => {
   return (
-    <>
-      <Pressable style={styles.container} onPress={() => setShowModal(true)}>
+    <Modal isVisible={show} onBackButtonPress={hide} onBackdropPress={hide}>
+      <Pressable style={styles.container}>
         <Image
-          source={{ uri: currentItem.image }}
+          source={{ uri: item.image }}
           resizeMode="cover"
           style={styles.image}
         />
         <View style={styles.content}>
           <Button
-            title={`${currentItem.like} ${
-              currentItem.like > 1 ? 'Likes' : 'Like'
-            }`}
+            title={`${item.like} ${item.like > 1 ? 'Likes' : 'Like'}`}
             containerStyle={{
               backgroundColor: colors.white,
               borderColor: colors.grey,
@@ -69,19 +53,11 @@ const HomeCard = ({ item }) => {
           />
         </View>
       </Pressable>
-
-      <HomeModal
-        show={showModal}
-        hide={() => setShowModal(false)}
-        item={currentItem}
-        handleLike={handleLike}
-        handleDislike={handleDislike}
-      />
-    </>
+    </Modal>
   );
 };
 
-export default HomeCard;
+export default HomeModal;
 
 const styles = StyleSheet.create({
   container: {

@@ -10,23 +10,7 @@ import data from '../data/data.json';
 
 export default function Home() {
   const [posts, setPosts] = React.useState(data);
-
-  const handleLike = id => {
-    const updatedPosts = [...posts];
-    const foundIndex = updatedPosts.findIndex(item => item.id === id);
-    updatedPosts[foundIndex].like = updatedPosts[foundIndex].like + 1;
-    setPosts(updatedPosts);
-  };
-
-  const handleDislike = id => {
-    const updatedPosts = [...posts];
-    const foundIndex = updatedPosts.findIndex(item => item.id === id);
-    updatedPosts[foundIndex].like =
-      updatedPosts[foundIndex].like === 0
-        ? 0
-        : updatedPosts[foundIndex].like - 1;
-    setPosts(updatedPosts);
-  };
+  const [refresh, setRefresh] = React.useState(false);
 
   const handleLikeAll = () => {
     const updatedPosts = [...posts];
@@ -34,6 +18,7 @@ export default function Home() {
       updatedPosts[key].like = updatedPosts[key].like + 1;
     });
     setPosts(updatedPosts);
+    setRefresh(true);
   };
 
   const handleDislikeAll = () => {
@@ -43,6 +28,7 @@ export default function Home() {
         updatedPosts[key].like === 0 ? 0 : updatedPosts[key].like - 1;
     });
     setPosts(updatedPosts);
+    setRefresh(true);
   };
 
   const handleReset = () => {
@@ -51,6 +37,7 @@ export default function Home() {
       updatedPosts[key].like = 0;
     });
     setPosts(updatedPosts);
+    setRefresh(true);
   };
 
   return (
@@ -84,14 +71,9 @@ export default function Home() {
         showsVerticalScrollIndicator={false}
         data={posts}
         keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <HomeCard
-            item={item}
-            handleLike={handleLike}
-            handleDislike={handleDislike}
-          />
-        )}
+        renderItem={({ item }) => <HomeCard item={item} />}
         contentContainerStyle={{ padding: 10 }}
+        extraData={refresh}
       />
     </DefaultView>
   );

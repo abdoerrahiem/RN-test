@@ -1,5 +1,5 @@
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import React from 'react';
+import React, { memo } from 'react';
 import Modal from 'react-native-modal';
 
 import { colors } from '../utils/colors';
@@ -7,6 +7,8 @@ import Button from './Button';
 import Distance from './Distance';
 
 const HomeModal = ({ show, hide, item, handleLike, handleDislike }) => {
+  console.log('home modal render');
+
   return (
     <Modal isVisible={show} onBackButtonPress={hide} onBackdropPress={hide}>
       <Pressable style={styles.container}>
@@ -57,7 +59,7 @@ const HomeModal = ({ show, hide, item, handleLike, handleDislike }) => {
   );
 };
 
-export default HomeModal;
+export default memo(HomeModal);
 
 const styles = StyleSheet.create({
   container: {
